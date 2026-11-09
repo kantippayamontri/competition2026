@@ -1,0 +1,20 @@
+# Introduction
+
+The dataset is for the training of Diabetic Retinopathy (DR) grading from retinal fundus images.
+It is based on the IDRiD (Indian Diabetic Retinopathy Image Dataset) and has 5 DR severity grades.
+Each grade is in a separate folder.
+
+# Dataset
+The dataset contains RGB fundus images (about 3400x3400 pixels) in 5 classes:
+
+- anoDR       : No DR (grade 0)
+- bmildDR     : Mild DR (grade 1)
+- cmoderateDR : Moderate DR (grade 2)
+- dsevereDR   : Severe DR (grade 3)
+- eproDR      : Proliferative DR (grade 4)
+
+The data is split into train (329 images) and val (84 images) folders.
+A hidden test set (103 images) is used for the final evaluation.
+The class to index mapping is in class_to_idx.txt.
+Note: the classes are imbalanced (e.g. bmildDR has very few images).
+

@@ -1,0 +1,1 @@
+{"anoDR": 0, "bmildDR": 1, "cmoderateDR": 2, "dsevereDR": 3, "eproDR": 4}
