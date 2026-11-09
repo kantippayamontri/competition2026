@@ -1,9 +1,11 @@
 # ===== Dataset (large / private) =====
 idrid_resplit_seed2026/
 test_idrid/
+*.zip
 
 # Private grading files (keep ignored even if the dataset folder is ever committed)
 **/test/
+**/tests/
 **/quarantine/
 **/manifest.json
 **/inventory.json
