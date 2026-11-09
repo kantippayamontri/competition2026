@@ -35,7 +35,7 @@ class EvaluateCLITest(unittest.TestCase):
             model[-1].weight.zero_()
             model[-1].bias.zero_()
             model[-1].bias[2] = 1
-        torch.jit.trace(model, torch.zeros(1, 3, 224, 224)).save(str(self.model_path))
+        torch.jit.trace(model, torch.zeros(1, 3, 512, 512)).save(str(self.model_path))
 
     def add_image(self, dataset, label):
         directory = self.base / dataset / label

@@ -23,7 +23,7 @@ class MappedImageFolder(datasets.ImageFolder):
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # transform
-IMG_SIZE = 224
+IMG_SIZE = 512
 train_transform = transforms.Compose(
     [
         transforms.Resize((IMG_SIZE, IMG_SIZE)),  # resize

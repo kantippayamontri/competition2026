@@ -42,7 +42,7 @@ class SimpleDataset(Dataset):
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 # transform (must match the eval transform in train.py)
-IMG_SIZE = 224
+IMG_SIZE = 512
 transform = transforms.Compose([
     transforms.Resize((IMG_SIZE, IMG_SIZE)),  # resize
     transforms.ToTensor(),
