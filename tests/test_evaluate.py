@@ -12,7 +12,8 @@ import torch
 
 
 CLASSMAP = {"anoDR": 0, "bmildDR": 1, "cmoderateDR": 2, "dsevereDR": 3, "eproDR": 4}
-VALIDATION = Path("idrid_resplit_seed2026/idrid_resplit_seed2026/val")
+VALIDATION = Path("idrid_data/val")
+HIDDEN = Path("idrid_data/test")
 
 
 class EvaluateCLITest(unittest.TestCase):
@@ -64,8 +65,8 @@ class EvaluateCLITest(unittest.TestCase):
         self.assertEqual(result.stdout, "")
 
     def test_hidden_only_subset_uses_script_relative_path(self):
-        self.add_image("test_idrid", "anoDR")
-        self.add_image("test_idrid", "cmoderateDR")
+        self.add_image(HIDDEN, "anoDR")
+        self.add_image(HIDDEN, "cmoderateDR")
         for mode in ("hidden", "anything-except-training"):
             with self.subTest(mode=mode):
                 self.assert_score(self.run_evaluator(mode), 2, 1, 50.0)
@@ -83,21 +84,21 @@ class EvaluateCLITest(unittest.TestCase):
         self.assert_no_score(self.run_evaluator("hidden"))
 
     def test_missing_validation_does_not_use_hidden(self):
-        self.add_image("test_idrid", "cmoderateDR")
+        self.add_image(HIDDEN, "cmoderateDR")
         self.assert_no_score(self.run_evaluator("training"))
 
     def test_empty_or_unmapped_hidden_does_not_emit_zero_score(self):
-        (self.base / "test_idrid").mkdir()
+        (self.base / HIDDEN).mkdir(parents=True)
         with self.subTest(contents="empty"):
             self.assert_no_score(self.run_evaluator("hidden"))
-        self.add_image("test_idrid", "unmapped")
+        self.add_image(HIDDEN, "unmapped")
         with self.subTest(contents="unmapped"):
             self.assert_no_score(self.run_evaluator("hidden"))
 
     def test_hidden_skips_unmapped_folders_without_stdout_noise(self):
-        self.add_image("test_idrid", "anoDR")
-        self.add_image("test_idrid", "cmoderateDR")
-        self.add_image("test_idrid", "unmapped")
+        self.add_image(HIDDEN, "anoDR")
+        self.add_image(HIDDEN, "cmoderateDR")
+        self.add_image(HIDDEN, "unmapped")
         self.assert_score(self.run_evaluator("hidden"), 2, 1, 50.0)
 
 

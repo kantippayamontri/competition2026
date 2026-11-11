@@ -1,3 +1,4 @@
+import copy
 import json
 import os
 
@@ -44,7 +45,7 @@ transform = transforms.Compose(
 )
 
 # data (train / val only; the test set is held out for evaluate.py)
-data_dir = "/home/kan/Study/dl_architecture/competition2026/idrid_resplit_seed2026/idrid_resplit_seed2026"
+data_dir = "/mnt/groups/aid002-a3463-7ef7d056/competition_2026"
 train_dataset = MappedImageFolder(
     root=f"{data_dir}/train", transform=train_transform
 )
@@ -91,7 +92,9 @@ loss_fn = nn.CrossEntropyLoss()
 optimizer = optim.SGD(model.parameters(), lr=0.01)
 
 # model training
-EPOCHS = 10
+EPOCHS = 50
+best_val_acc = -1.0
+best_state = None
 for epoch in range(EPOCHS):
     model.train()
     total_loss = 0
@@ -124,8 +127,14 @@ for epoch in range(EPOCHS):
             _, predicted = torch.max(outputs, 1)
             val_total += labels.size(0)
             val_correct += (predicted == labels).sum().item()
-    print(f"Epoch {epoch + 1}, Val Accuracy: {100 * val_correct / val_total}%")
+    val_acc = 100 * val_correct / val_total
+    print(f"Epoch {epoch + 1}, Val Accuracy: {val_acc}%")
+    if val_acc > best_val_acc:
+        best_val_acc = val_acc
+        best_state = copy.deepcopy(model.state_dict())
+        print(f"Epoch {epoch + 1}, New best Val Accuracy: {val_acc}%")
 
-
+print(f"Best Val Accuracy: {best_val_acc}%")
+model.load_state_dict(best_state)
 model_scripted = torch.jit.script(model.to("cpu"))  # script
 model_scripted.save("idrid_model.pth")  # save model

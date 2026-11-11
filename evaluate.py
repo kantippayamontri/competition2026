@@ -70,11 +70,11 @@ def custom_collate_fn(batch):
 # model_path = 'idrid_model.pth'
 if len(sys.argv) > 2 and sys.argv[2] != 'training':
      # hidden mode: evaluate on the hidden test set
-     data_dir = os.path.join(base_dir, 'test_idrid')
+     data_dir = os.path.join(base_dir, 'idrid_data', 'test')
      testds = SimpleDataset(data_dir, classmap,transform=transform)
      test_loader = DataLoader(testds, batch_size=16, collate_fn=custom_collate_fn)
 else:
-     data_dir = os.path.join(base_dir, 'idrid_resplit_seed2026', 'idrid_resplit_seed2026', 'val')
+     data_dir = os.path.join(base_dir, 'idrid_data', 'val')
      dataset = MappedImageFolder(root=data_dir, transform=transform)
      test_loader = DataLoader(dataset, batch_size=16)
 model_path = sys.argv[1]

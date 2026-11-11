@@ -1,5 +1,6 @@
 # ===== Dataset (large / private) =====
 idrid_resplit_seed2026/
+idrid_data/
 test_idrid/
 test_idrid_512/
 *.zip
@@ -9,6 +10,7 @@ test_idrid_512/
 **/tests/
 **/quarantine/
 **/manifest.json
+**/manifest.csv
 **/inventory.json
 **/summary.json
 **/README_PRIVATE.md

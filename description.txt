@@ -14,7 +14,7 @@ The dataset contains RGB fundus images (about 3400x3400 pixels) in 5 classes:
 - eproDR      : Proliferative DR (grade 4)
 
 The data is split into train (329 images) and val (84 images) folders.
-A hidden test set (103 images) is used for the final evaluation.
+A private hidden test set is used for the final evaluation.
 The class to index mapping is in class_to_idx.txt.
 Note: the classes are imbalanced (e.g. bmildDR has very few images).
 
