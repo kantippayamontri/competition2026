@@ -3,6 +3,7 @@ idrid_resplit_seed2026/
 idrid_data/
 test_idrid/
 test_idrid_512/
+_idrid_data/
 *.zip
 
 # Private grading files (keep ignored even if the dataset folder is ever committed)

@@ -24,11 +24,18 @@ This project aims to build a convolutional neural network (CNN) model capable of
 
 ## Dataset Description 資料集描述
 
-The dataset is based on the IDRiD (Indian Diabetic Retinopathy Image Dataset) and is available in this repository under the directory:  
-資料集基於 IDRiD（Indian Diabetic Retinopathy Image Dataset），已包含在本專案的以下路徑中：  
+Git does not include the IDRiD (Indian Diabetic Retinopathy Image Dataset) images. On the course cluster, `train.py` reads them from this shared directory:
+
+Git 儲存庫不包含 IDRiD（Indian Diabetic Retinopathy Image Dataset）影像。在課程叢集上，`train.py` 會從以下共用目錄讀取影像：
+
 ```
-idrid_data/
+/mnt/groups/aid002-a3463-7ef7d056/competition_2026
 ```
+
+Outside the cluster, set `data_dir` in `train.py` to the local directory containing both `train/` and `val/`.
+
+若在課程叢集以外訓練，請將 `train.py` 中的 `data_dir` 設為本機 `train/` 與 `val/` 的共同上層目錄。
+
 **Dataset Structure 資料集結構**
 
 The dataset is already split into `train` and `val` folders. Inside each, there is one folder per DR grade, containing the fundus images of that grade.  
@@ -37,7 +44,7 @@ The dataset is already split into `train` and `val` folders. Inside each, there 
 Example directory structure:  
 資料夾結構範例：
 ```
-idrid_data/
+<data_dir>/
 ├── train/
 │   ├── anoDR/
 │   │   ├── IDRiD_001.png
@@ -68,35 +75,37 @@ idrid_data/
 
 ## Installation Guide 安裝指南
 
+After cloning the repository, open a terminal in the project directory. If you use the course JupyterLab, open its **Terminal** so the kernel is registered on the course server. You need `python3` with the `venv` module.
 
-1. **Clone the Repository**  
+複製專案後，請在專案根目錄開啟終端機。若使用課程的 JupyterLab，請使用其中的 **Terminal**，以便在課程伺服器上註冊核心。安裝腳本需要具備 `venv` 模組的 `python3`。
 
+```sh
+./install.sh
 ```
-git clone <repository-url>
-cd competition2026
-```
 
-2. **Ensure Required Libraries Are Installed 確認已安裝所需的函式庫**
+The installer creates or reuses `.venv`, installs the dependencies there, and registers the **Python (IDRiD 2026)** kernel for your account.
 
-Make sure you have the necessary libraries installed (e.g., PyTorch, torchvision, tqdm, Pillow). It's assumed you have these set up in your environment.  
-請確認環境中已安裝所需函式庫（如 PyTorch、torchvision、tqdm、Pillow）。  
-假設您已經在環境中完成安裝設定。
-
-3. **Set Up the Dataset 設置資料集**
-
-The dataset should already be in place within the repository. If not, ensure that the dataset directory is correctly placed as per the structure mentioned above, and update `data_dir` in `train.py` if needed.  
-資料集應該已包含於此倉庫中。  
-如果沒有，請依照上述結構將資料集放置於正確位置，並視需要修改 `train.py` 中的 `data_dir`。
-
+安裝腳本會建立或沿用 `.venv`，在其中安裝相依套件，並為你的帳號註冊 **Python (IDRiD 2026)** 核心。
 
 ## Usage Instructions 使用說明
 
 **Training the Model 訓練模型**
 
-To train the model, simply run:  
-執行以下指令以訓練模型：  
+If the class JupyterLab is already running under your account, open `train.ipynb` there. Select **Python (IDRiD 2026)** under **Kernel > Change Kernel**. If the kernel is missing, refresh the page.
 
-` python train.py `
+若已用自己的帳號開啟課程的 JupyterLab，請直接在其中開啟 `train.ipynb`。在 **Kernel > Change Kernel** 中選擇 **Python (IDRiD 2026)**。若找不到該核心，請重新整理頁面。
+
+To start JupyterLab yourself, run this command from the repository root:
+
+若要自行啟動 JupyterLab，請在專案根目錄執行：
+
+```sh
+.venv/bin/jupyter-lab train.ipynb
+```
+
+Run the first cell to check the Python interpreter and training device. Once the [dataset](#dataset-description-資料集描述) is ready, run the second cell to start `train.py`. For the same training in a terminal, run `.venv/bin/python train.py`.
+
+執行第一個儲存格，確認 Python 直譯器與訓練裝置。備妥[資料集](#dataset-description-資料集描述)後，執行第二個儲存格即可啟動 `train.py`。若要在終端機執行相同的訓練，請執行 `.venv/bin/python train.py`。
 
 - The train.py script trains a simple CNN model on the `train` set and reports the accuracy on the `val` set after every epoch.
 - 此 train.py 腳本將使用 `train` 資料集訓練一個簡單的 CNN 模型，並在每個 epoch 結束後輸出 `val` 資料集的準確率。
@@ -108,15 +117,18 @@ To train the model, simply run:
 
 **Testing the Model 測試模型**
 
-To evaluate the model's performance:  
-執行以下指令來評估模型性能：  
+`evaluate.py` reads validation images from `idrid_data/val/` under the repository root. With those images in place, run:
 
-` python evaluate.py idrid_model.pth training `
+`evaluate.py` 會從專案根目錄下的 `idrid_data/val/` 讀取驗證影像。備妥影像後，請執行：
+
+```sh
+.venv/bin/python evaluate.py idrid_model.pth training
+```
 
 - The evaluate.py script will run the trained model on the validation dataset and output the accuracy.
 - evaluate.py 腳本將使用驗證集評估訓練好的模型並輸出準確率。
-- The final score is computed on the hidden test set with ` python evaluate.py idrid_model.pth hidden `.
-- 最終成績將以隱藏測試集計算（` python evaluate.py idrid_model.pth hidden `）。
+- The final score is computed on the hidden test set with `.venv/bin/python evaluate.py idrid_model.pth hidden`.
+- 最終成績將以隱藏測試集計算（`.venv/bin/python evaluate.py idrid_model.pth hidden`）。
 - If you change the image size or normalization in train.py, make the same change to the `transform` in evaluate.py.
 - 若你修改了 train.py 中的圖片大小或正規化設定，請同步修改 evaluate.py 中的 `transform`。
 
@@ -125,20 +137,14 @@ To evaluate the model's performance:
 
 ```
 competition2026/
+├── install.sh                              # Environment and kernel setup 環境與核心安裝腳本
+├── train.ipynb                             # Training notebook 訓練筆記本
 ├── train.py                                # Training script 訓練腳本
 ├── evaluate.py                             # Testing/Evaluation script 測試/評估腳本
 ├── class_to_idx.txt                        # 每個病變等級類別的對應索引
-├── idrid_data/                             # Dataset directory 資料集資料夾
-│   ├── train/
-│   │   ├── anoDR/
-│   │   ├── bmildDR/
-│   │   └── ... (5 class folders)
-│   └── val/
-│       └── ... (5 class folders)
 └── README.md                               # README file 說明文件
 ```
 
 - **train.py**: Script to train the CNN model. 訓練 CNN 模型的腳本
 - **evaluate.py**: Script to test the trained model. 測試訓練模型的腳本
 - **class_to_idx.txt**: Mapping from class folder name to class index. 類別資料夾名稱與索引的對應
-- **idrid_data/**: Directory containing the dataset. 包含資料集的目錄
